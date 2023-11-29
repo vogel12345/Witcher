@@ -135,17 +135,9 @@ if uploaded_file:
                 # Guardar el DataFrame actualizado en un nuevo archivo CSV
                 updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
                 df.to_csv(updated_csv_path, index=False)
-
-                # Botón para descargar el CSV actualizado
-                if st.button("Descargar CSV Actualizado"):
-                    st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
         else:
             # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
-    else:
-        # Limpiar el espacio de mensaje de éxito si no se van a eliminar registros
-        st.empty()
-   
     else:
         # Limpiar la pantalla
         df_placeholder.text('')
