@@ -124,7 +124,7 @@ if uploaded_file:
                 # Eliminar las filas seleccionadas
                 df = df.drop(random_sample.index)
 
-                # Mensaje de éxito solo si se eliminaron registros
+                # Mensaje de éxito
                 if num_records_to_delete > 0:
                     st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
@@ -135,6 +135,8 @@ if uploaded_file:
                 # Botón para descargar el CSV actualizado
                 if st.download_button("Descargar CSV Actualizado", key="download_button", data=df.to_csv(index=False), file_name="archivo_actualizado.csv"):
                     st.success("¡Descarga iniciada!")
+            else:
+                st.info("No se eliminaron registros. Puedes descargar el CSV normal.")
         else:
             # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
