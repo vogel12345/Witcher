@@ -114,30 +114,30 @@ if uploaded_file:
         # Cuadro de entrada para la cantidad de registros a eliminar
         num_records_to_delete = st.number_input("**Ingrese la cantidad de registros a eliminar:**", min_value=0, max_value=len(df), step=1)
 
-        # Botón para eliminar registros
-        if st.button("Eliminar Registros"):
-            # Seleccionar una muestra aleatoria de filas
-            random_sample = df.sample(n=num_records_to_delete, random_state=42)
+        # Validar que la cantidad de registros a eliminar esté en el rango adecuado
+        if 0 <= num_records_to_delete <= len(df):
+            # Botón para eliminar registros
+            if st.button("Eliminar Registros"):
+                # Seleccionar una muestra aleatoria de filas
+                random_sample = df.sample(n=num_records_to_delete, random_state=42)
 
-            # Eliminar las filas seleccionadas
-            df = df.drop(random_sample.index)
+                # Eliminar las filas seleccionadas
+                df = df.drop(random_sample.index)
 
-            # Mensaje de éxito solo si se eliminaron registros
-            if num_records_to_delete > 0:
-                st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
-            else:
-                st.info("No se eliminaron registros.")
+                # Mensaje de éxito solo si se eliminaron registros
+                if num_records_to_delete > 0:
+                    st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
-            # Guardar el DataFrame actualizado en un nuevo archivo CSV
-            updated_csv_path = "archivo_actualizado.csv"
-            df.to_csv(updated_csv_path, index=False)
-
-            # Botón para descargar el CSV actualizado
-            if st.download_button("Descargar CSV Actualizado", key="download_button", data=df.to_csv(index=False), file_name="archivo_actualizado.csv"):
-                st.success("¡Descarga iniciada!")
-            # Evitar mostrar el botón de descarga CSV si la cantidad inicial no es válida
-            if "download_button" not in st.session_state:
-            st.info("Carga un archivo válido para activar la descarga del CSV actualizado.")
+                # Guardar el DataFrame actualizado en un nuevo archivo CSV
+                updated_csv_path = "archivo_actualizado.csv"
+                df.to_csv(updated_csv_path, index=False)
+                
+                # Botón para descargar el CSV actualizado
+                if st.download_button("Descargar CSV Actualizado", key="download_button", data=df.to_csv(index=False), file_name="archivo_actualizado.csv"):
+                    st.success("¡Descarga iniciada!")
+        else:
+            # Mostrar advertencia si la cantidad no está en el rango adecuado
+            st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
     else:
         # Limpiar la pantalla
         df_placeholder.text('')
