@@ -43,7 +43,7 @@ def download_csv():
     with open('steam.csv', 'rb') as f:
         csv = f.read()
         b64 = base64.b64encode(csv).decode()
-        href = f'<a href="data:file/csv;base64,{b64}" download="steam.csv">Descargar archivo local</a>'
+        href = f'<a href="data:file/csv;base64,{b64}" download="steam.csv">Descargar archivo recortado</a>'
     return href
 
 # Definir la función para generar el enlace a Google Drive
