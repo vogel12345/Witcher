@@ -58,11 +58,6 @@ def get_binary_file_downloader_html(bin_file_path, label='Archivo'):
     href = f'<a href="data:file/csv;base64,{b64}" download="{label}.csv">Descargar {label}</a>'
     return href
 
-if 'uploaded_file' not in st.session_state:
-    st.session_state.uploaded_file = None
-
-uploaded_file = st.file_uploader('**Selecciona el archivo**', type='csv')
-
 if uploaded_file:
     df_placeholder = st.empty()  # Marcador de posición para el DataFrame
     df = pd.read_csv(uploaded_file)
