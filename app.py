@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
 import os
+from io import BytesIO
 
 # Establecer el título de la página
 st.set_page_config(page_title='The Witcher 3 Wild Hunt')
@@ -131,9 +132,14 @@ if uploaded_file:
                 # Guardar el DataFrame actualizado en un nuevo archivo CSV
                 updated_csv_path = "archivo_actualizado.csv"
                 df.to_csv(updated_csv_path, index=False)
-                
+
+                # Convertir el DataFrame a BytesIO
+                csv_data = BytesIO()
+                df.to_csv(csv_data, index=False)
+                csv_data.seek(0)
+
                 # Botón para descargar el CSV actualizado
-                if st.download_button("Descargar CSV Actualizado", key="download_button", data=df.to_csv(index=False), file_name="archivo_actualizado.csv"):
+                if st.download_button("Descargar CSV Actualizado", key="download_button", data=csv_data, file_name="archivo_actualizado.csv"):
                     st.success("¡Descarga iniciada!")
         else:
             # Mostrar advertencia si la cantidad no está en el rango adecuado
