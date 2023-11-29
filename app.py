@@ -39,6 +39,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+def download_csv():
+    with open('steam.csv', 'rb') as f:
+        csv = f.read()
+        b64 = base64.b64encode(csv).decode()
+        href = f'<a href="data:file/csv;base64,{b64}" download="steam.csv">Descargar archivo local</a>'
+    return href
+
+# Definir la función para generar el enlace a Google Drive
 def generate_drive_link(file_id, filename):
     base_url = 'https://drive.google.com/uc?export=download&id='
     drive_link = base_url + file_id
@@ -49,14 +57,19 @@ def generate_drive_link(file_id, filename):
 file_id = '1rmjw6-pv5UlKyMvuhWm-JgJVLCF7y7cy'
 
 # Nombre del archivo que se mostrará en el enlace
-filename = 'Descargar archivo CSV completo'
+filename_drive = 'Descargar archivo completo'
 
-# Generar el enlace
-drive_link = generate_drive_link(file_id, filename)
+# Generar el enlace a Google Drive
+drive_link = generate_drive_link(file_id, filename_drive)
 
-# Crear un botón de descarga en Streamlit
-st.markdown(drive_link, unsafe_allow_html=True)
+# Crear dos columnas para colocar los botones uno al lado del otro
+col1, col2 = st.columns(2)
 
+# Colocar el botón de descarga local en la primera columna
+col1.markdown(download_csv(), unsafe_allow_html=True)
+
+# Colocar el botón de descarga de Google Drive en la segunda columna
+col2.markdown(drive_link, unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader('**Selecciona el archivo**', type='csv')
 
