@@ -99,7 +99,6 @@ def get_download_folder():
     return download_folder
 
 if uploaded_file:
-    st.text("Subiendo datos, por favor espere...")
     df_placeholder = st.empty()  # Marcador de posición para el DataFrame
     df = pd.read_csv(uploaded_file)
 
