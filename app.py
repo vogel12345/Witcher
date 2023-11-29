@@ -89,29 +89,49 @@ if 'uploaded_file' not in st.session_state:
 uploaded_file = st.file_uploader('**Selecciona el archivo**', type='csv')
 
 if uploaded_file:
-    df_placeholder = st.empty()
+    df_placeholder = st.empty()  # Marcador de posición para el DataFrame
     df = pd.read_csv(uploaded_file)
+
+    # Mostrar ventana de datos
     df_placeholder.subheader("Datos del archivo CSV")
     df_placeholder.dataframe(df)
 
+    # Pregunta sobre eliminar registros
     delete_records = st.radio("**¿Deseas eliminar registros?**", ("Sí", "No"))
 
     if delete_records == "Sí":
+        # Cuadro de entrada para la cantidad de registros a eliminar
         num_records_to_delete = st.number_input("**Ingrese la cantidad de registros a eliminar:**", min_value=0, max_value=len(df), step=1)
 
+        # Validar que la cantidad de registros a eliminar esté en el rango adecuado
         if 0 <= num_records_to_delete <= len(df):
+            # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
 
+            # Botón para eliminar registros
             if st.button("Eliminar Registros"):
+                # Seleccionar una muestra aleatoria de filas
                 random_sample = df.sample(n=num_records_to_delete, random_state=42)
+
+                # Eliminar las filas seleccionadas
                 df = df.drop(random_sample.index)
+
+                # Mensaje de éxito
                 st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
-                download_folder = get_download_folder()
-                updated_csv_path = os.path.join(download_folder, "archivo_actualizado.csv")
+                # Guardar el DataFrame actualizado en un nuevo archivo CSV
+                updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
                 df.to_csv(updated_csv_path, index=False)
 
-                st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
+                # Botón para descargar el CSV actualizado
+                if st.button("Descargar CSV Actualizado"):
+                    st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
+        else:
+            # Mostrar advertencia si la cantidad no está en el rango adecuado
+            st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
+    else:
+        # Limpiar el espacio de mensaje de éxito si no se van a eliminar registros
+        st.empty()
    
     else:
         # Limpiar la pantalla
