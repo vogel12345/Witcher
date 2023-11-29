@@ -135,9 +135,9 @@ if uploaded_file:
             # Botón para descargar el CSV actualizado
             if st.download_button("Descargar CSV Actualizado", key="download_button", data=df.to_csv(index=False), file_name="archivo_actualizado.csv"):
                 st.success("¡Descarga iniciada!")
-            # Evitar mostrar el botón de descarga CSV si la cantidad inicial no es válida
-            if "download_button" not in st.session_state:
-                st.info("Carga un archivo válido para activar la descarga del CSV actualizado.")
+        # Evitar mostrar el botón de descarga CSV si la cantidad inicial no es válida
+        if "download_button" not in st.session_state:
+        st.info("Carga un archivo válido para activar la descarga del CSV actualizado.")
     else:
         # Limpiar la pantalla
         df_placeholder.text('')
