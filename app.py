@@ -46,36 +46,23 @@ def download_csv():
         href = f'<a href="data:file/csv;base64,{b64}" download="steam.csv">Descargar archivo recortado</a>'
     return href
 
-# Definir la función para generar el enlace a Google Drive
 def generate_drive_link(file_id, filename):
     base_url = 'https://drive.google.com/uc?export=download&id='
     drive_link = base_url + file_id
     href = f'<a href="{drive_link}" target="_blank">{filename}</a>'
     return href
 
-# ID del archivo en Google Drive
 file_id = '1rmjw6-pv5UlKyMvuhWm-JgJVLCF7y7cy'
-
-# Nombre del archivo que se mostrará en el enlace
 filename_drive = 'Descargar archivo completo'
-
-# Generar el enlace a Google Drive
 drive_link = generate_drive_link(file_id, filename_drive)
 
-# Crear dos columnas para colocar los botones uno al lado del otro
 col1, col2 = st.columns(2)
-
-# Colocar el botón de descarga local en la primera columna
 col1.markdown(download_csv(), unsafe_allow_html=True)
-
-# Colocar el botón de descarga de Google Drive en la segunda columna
 col2.markdown(drive_link, unsafe_allow_html=True)
-
 
 uploaded_file = st.file_uploader('**Selecciona el archivo**', type='csv')
 
 if st.button("Eliminar CSV"):
-    # Reiniciar el DataFrame
     df = pd.DataFrame()
     uploaded_file = 0;
     st.write("CSV eliminado. Puedes cargar otro archivo.")
@@ -88,54 +75,38 @@ def get_binary_file_downloader_html(bin_file_path, label='Archivo'):
     return href
 
 def get_download_folder():
-    # Obtener la carpeta de descargas del sistema operativo
-    if os.name == 'nt':  # Sistema Windows
+    if os.name == 'nt':
         download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
-    elif os.name == 'posix':  # Sistema tipo Unix (Linux, macOS)
+    elif os.name == 'posix':
         download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
     else:
-        # Sistema operativo desconocido, utiliza una ruta genérica
         download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
-
     return download_folder
 
 if uploaded_file:
-    df_placeholder = st.empty()  # Marcador de posición para el DataFrame
+    df_placeholder = st.empty()
     df = pd.read_csv(uploaded_file)
-
-    # Mostrar ventana de datos
     df_placeholder.subheader("Datos del archivo CSV")
     df_placeholder.dataframe(df)
 
-    # Pregunta sobre eliminar registros
     delete_records = st.radio("**¿Deseas eliminar registros?**", ("Sí", "No"))
 
     if delete_records == "Sí":
-        # Cuadro de entrada para la cantidad de registros a eliminar
         num_records_to_delete = st.number_input("**Ingrese la cantidad de registros a eliminar:**", min_value=0, max_value=len(df), step=1)
 
-        # Validar que la cantidad de registros a eliminar esté en el rango adecuado
         if 0 <= num_records_to_delete <= len(df):
-            # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
 
-            # Botón para eliminar registros
             if st.button("Eliminar Registros"):
-                # Seleccionar una muestra aleatoria de filas
                 random_sample = df.sample(n=num_records_to_delete, random_state=42)
-
-                # Eliminar las filas seleccionadas
                 df = df.drop(random_sample.index)
-
-                # Mensaje de éxito
                 st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
-                # Guardar el DataFrame actualizado en un nuevo archivo CSV
-                updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
+                download_folder = get_download_folder()
+                updated_csv_path = os.path.join(download_folder, "archivo_actualizado.csv")
                 df.to_csv(updated_csv_path, index=False)
-        else:
-            # Mostrar advertencia si la cantidad no está en el rango adecuado
-            st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
+
+                st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
     else:
         # Limpiar la pantalla
         df_placeholder.text('')
