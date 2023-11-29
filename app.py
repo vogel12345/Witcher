@@ -127,8 +127,6 @@ if uploaded_file:
                 # Mensaje de éxito
                 if num_records_to_delete > 0:
                     st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
-                    # Resetear la variable num_records_to_delete
-                    num_records_to_delete = 0
 
                 # Guardar el DataFrame actualizado en un nuevo archivo CSV
                 updated_csv_path = "archivo_actualizado.csv"
