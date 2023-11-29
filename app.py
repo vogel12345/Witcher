@@ -74,8 +74,15 @@ def get_binary_file_downloader_html(bin_file_path, label='Archivo'):
     return href
 
 def get_download_folder():
-    # Obtiene la carpeta de descargas del sistema operativo
-    download_folder = os.path.expanduser("~" + os.path.sep + "Downloads")
+    # Obtener la carpeta de descargas del sistema operativo
+    if os.name == 'nt':  # Sistema Windows
+        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+    elif os.name == 'posix':  # Sistema tipo Unix (Linux, macOS)
+        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+    else:
+        # Sistema operativo desconocido, utiliza una ruta genérica
+        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+
     return download_folder
 
 if uploaded_file:
