@@ -516,7 +516,8 @@ if uploaded_file:
 
         # - - - - - - -- - - - -- - - Modelos de Mineria - - --- - -- - -- - - - -- - - - --  -- 
 
-        elif view_option == "Modelos de mineria":        
+        elif view_option == "Modelos de mineria":
+            st.subheader("Modelos de mineria")
             # Seleccionar la columna para la regresión logística
             regression_column = st.selectbox("**Seleccione la columna para la regresión logística:**", ['author.playtime_forever','votes_helpful','author.playtime_last_two_weeks', 'author.num_reviews','steam_purchase','received_for_free','author.num_games_owned'])
 
