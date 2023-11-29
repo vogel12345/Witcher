@@ -136,9 +136,9 @@ if uploaded_file:
         else:
             # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
-            # Limpiar el espacio de mensaje de éxito
-            st.empty()
-            # No mostrar el botón de descargar si la cantidad no está en el rango adecuado
+    else:
+        # Limpiar el espacio de mensaje de éxito si no se van a eliminar registros
+        st.empty()
    
     else:
         # Limpiar la pantalla
