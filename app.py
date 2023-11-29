@@ -79,6 +79,18 @@ if st.button("Eliminar CSV"):
     uploaded_file = 0;
     st.write("CSV eliminado. Puedes cargar otro archivo.")
 
+def get_download_folder():
+    # Obtener la carpeta de descargas del sistema operativo
+    if os.name == 'nt':  # Sistema Windows
+        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+    elif os.name == 'posix':  # Sistema tipo Unix (Linux, macOS)
+        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+    else:
+        # Sistema operativo desconocido, utiliza una ruta genérica
+        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+
+    return download_folder
+
 def get_binary_file_downloader_html(bin_file_path, label='Archivo'):
     with open(bin_file_path, 'rb') as f:
         data = f.read()
@@ -86,14 +98,10 @@ def get_binary_file_downloader_html(bin_file_path, label='Archivo'):
     href = f'<a href="data:file/csv;base64,{b64}" download="{label}.csv">Descargar {label}</a>'
     return href
 
-def get_download_folder():
-    # Ruta al directorio donde quieres guardar el archivo CSV
-    output_directory = os.path.join(os.path.expanduser("~"), "Downloads")
+if 'uploaded_file' not in st.session_state:
+    st.session_state.uploaded_file = None
 
-    # Asegúrate de que el directorio exista; si no, créalo
-    os.makedirs(output_directory, exist_ok=True)
-
-    return output_directory
+uploaded_file = st.file_uploader('**Selecciona el archivo**', type='csv')
 
 if uploaded_file:
     df_placeholder = st.empty()  # Marcador de posición para el DataFrame
@@ -115,23 +123,21 @@ if uploaded_file:
             # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
 
-            # Botón para eliminar registros
-            if st.button("Eliminar Registros"):
-                # Seleccionar una muestra aleatoria de filas
-                random_sample = df.sample(n=num_records_to_delete, random_state=42)
+            # Seleccionar una muestra aleatoria de filas
+            random_sample = df.sample(n=num_records_to_delete, random_state=42)
 
-                # Eliminar las filas seleccionadas
-                df = df.drop(random_sample.index)
+            # Eliminar las filas seleccionadas
+            df = df.drop(random_sample.index)
 
-                # Mensaje de éxito
-                st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
+            # Mensaje de éxito
+            st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
-                # Guardar el DataFrame actualizado en un nuevo archivo CSV
-                updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
-                df.to_csv(updated_csv_path, index=False)
+            # Guardar el DataFrame actualizado en un nuevo archivo CSV
+            updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
+            df.to_csv(updated_csv_path, index=False)
 
-                # Descargar automáticamente el CSV actualizado
-                st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
+            # Descargar automáticamente el CSV actualizado
+            st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
         else:
             # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
