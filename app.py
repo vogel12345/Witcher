@@ -124,8 +124,9 @@ if uploaded_file:
                 # Eliminar las filas seleccionadas
                 df = df.drop(random_sample.index)
 
-                # Mensaje de éxito
-                st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
+                # Mensaje de éxito solo si se eliminaron registros
+                if num_records_to_delete > 0:
+                    st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
                 # Guardar el DataFrame actualizado en un nuevo archivo CSV
                 updated_csv_path = "archivo_actualizado.csv"
