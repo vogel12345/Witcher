@@ -110,10 +110,8 @@ if uploaded_file:
         # Cuadro de entrada para la cantidad de registros a eliminar
         num_records_to_delete = st.number_input("**Ingrese la cantidad de registros a eliminar:**", min_value=0, max_value=len(df), step=1)
 
-        # Validar que la cantidad de registros a eliminar no supere la longitud del DataFrame
-        if num_records_to_delete > len(df):
-            st.warning("Cantidad que supera el CSV. La cantidad de registros a eliminar no puede ser mayor que la cantidad total en el CSV.")
-        else:
+        # Validar que la cantidad de registros a eliminar esté en el rango adecuado
+        if 0 <= num_records_to_delete <= len(df):
             # Botón para eliminar registros
             if st.button("Eliminar Registros"):
                 # Seleccionar una muestra aleatoria de filas
@@ -132,6 +130,9 @@ if uploaded_file:
                 # Botón para descargar el CSV actualizado
                 if st.button("Descargar CSV Actualizado"):
                     st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
+        else:
+            # Mostrar advertencia si la cantidad no está en el rango adecuado
+            st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
    
     else:
         # Limpiar la pantalla
