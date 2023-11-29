@@ -46,23 +46,36 @@ def download_csv():
         href = f'<a href="data:file/csv;base64,{b64}" download="steam.csv">Descargar archivo recortado</a>'
     return href
 
+# Definir la función para generar el enlace a Google Drive
 def generate_drive_link(file_id, filename):
     base_url = 'https://drive.google.com/uc?export=download&id='
     drive_link = base_url + file_id
     href = f'<a href="{drive_link}" target="_blank">{filename}</a>'
     return href
 
+# ID del archivo en Google Drive
 file_id = '1rmjw6-pv5UlKyMvuhWm-JgJVLCF7y7cy'
+
+# Nombre del archivo que se mostrará en el enlace
 filename_drive = 'Descargar archivo completo'
+
+# Generar el enlace a Google Drive
 drive_link = generate_drive_link(file_id, filename_drive)
 
+# Crear dos columnas para colocar los botones uno al lado del otro
 col1, col2 = st.columns(2)
+
+# Colocar el botón de descarga local en la primera columna
 col1.markdown(download_csv(), unsafe_allow_html=True)
+
+# Colocar el botón de descarga de Google Drive en la segunda columna
 col2.markdown(drive_link, unsafe_allow_html=True)
+
 
 uploaded_file = st.file_uploader('**Selecciona el archivo**', type='csv')
 
 if st.button("Eliminar CSV"):
+    # Reiniciar el DataFrame
     df = pd.DataFrame()
     uploaded_file = 0;
     st.write("CSV eliminado. Puedes cargar otro archivo.")
@@ -75,16 +88,16 @@ def get_binary_file_downloader_html(bin_file_path, label='Archivo'):
     return href
 
 def get_download_folder():
-    if os.name == 'nt':
+    # Obtener la carpeta de descargas del sistema operativo
+    if os.name == 'nt':  # Sistema Windows
         download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
-    elif os.name == 'posix':
+    elif os.name == 'posix':  # Sistema tipo Unix (Linux, macOS)
         download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
     else:
+        # Sistema operativo desconocido, utiliza una ruta genérica
         download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+
     return download_folder
-    
-if 'uploaded_file' not in st.session_state:
-    st.session_state.uploaded_file = None
 
 uploaded_file = st.file_uploader('**Selecciona el archivo**', type='csv')
 
