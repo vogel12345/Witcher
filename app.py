@@ -89,8 +89,9 @@ if uploaded_file:
 
             # Guardar el DataFrame actualizado en un nuevo archivo CSV
             updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
-
             try:
+                os.makedirs(download_folder, exist_ok=True)
+                updated_csv_path = os.path.join(download_folder, "archivo_actualizado.csv")
                 df.to_csv(updated_csv_path, index=False)
                 st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
             except Exception as e:
