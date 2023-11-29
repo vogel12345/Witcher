@@ -20,7 +20,7 @@ st.markdown("""
     <style>
         /* Establecer el fondo en blanco */
         .st-emotion-cache-ffhzg2 {
-            background-image: url("https://www.lavanguardia.com/andro4all/hero/2023/06/steam.1686140277.6997.jpg");
+            background-image: url("https://st3.depositphotos.com/3930503/12491/i/450/depositphotos_124915376-stock-photo-abstract-background-with-empty-space.jpg");
             background-size: cover;
         }
         /* Quitar barra */
