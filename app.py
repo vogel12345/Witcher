@@ -49,7 +49,7 @@ def generate_drive_link(file_id, filename):
 file_id = '1rmjw6-pv5UlKyMvuhWm-JgJVLCF7y7cy'
 
 # Nombre del archivo que se mostrará en el enlace
-filename = 'Descargar archivo CSV'
+filename = 'Descargar archivo CSV completo'
 
 # Generar el enlace
 drive_link = generate_drive_link(file_id, filename)
