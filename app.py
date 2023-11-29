@@ -112,6 +112,9 @@ if uploaded_file:
 
         # Validar que la cantidad de registros a eliminar esté en el rango adecuado
         if 0 <= num_records_to_delete <= len(df):
+            # Mostrar advertencia si la cantidad no está en el rango adecuado
+            st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
+
             # Botón para eliminar registros
             if st.button("Eliminar Registros"):
                 # Seleccionar una muestra aleatoria de filas
