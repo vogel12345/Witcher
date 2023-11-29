@@ -126,8 +126,8 @@ if uploaded_file:
         df['timestamp_created'] = pd.to_datetime(df["timestamp_created"]).dt.date
 
         # Agregar control de selección de fecha
-        start_date = st.date_input(f"**Seleccione la fecha de inicio. Fecha minima de la Base de Datos:** {min(df['timestamp_created'])}",value=min(df['timestamp_created']),min_value= min(df['timestamp_created']),max_value= max(df['timestamp_created']))
-        end_date = st.date_input(f"**Seleccione la fecha de fin. Fecha maxima de la Base de Datos:** {max(df['timestamp_created'])}",value=max(df['timestamp_created']), min_value=min(df['timestamp_created']),max_value= max(df['timestamp_created']))
+        start_date = st.date_input(f"Seleccione la fecha de inicio. Fecha minima de la Base de Datos: {min(df['timestamp_created'])}",value=min(df['timestamp_created']),min_value= min(df['timestamp_created']),max_value= max(df['timestamp_created']))
+        end_date = st.date_input(f"Seleccione la fecha de fin. Fecha maxima de la Base de Datos: {max(df['timestamp_created'])}",value=max(df['timestamp_created']), min_value=min(df['timestamp_created']),max_value= max(df['timestamp_created']))
         
         # Filtrar DataFrame por rango de fechas
         df = df[(df['timestamp_created'] >= start_date) & (df['timestamp_created'] <= end_date)]
