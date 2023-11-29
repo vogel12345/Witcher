@@ -128,12 +128,12 @@ if uploaded_file:
                 st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
                 # Guardar el DataFrame actualizado en un nuevo archivo CSV
-                updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
+                updated_csv_path = "archivo_actualizado.csv"
                 df.to_csv(updated_csv_path, index=False)
-
+                
                 # Botón para descargar el CSV actualizado
-                if st.button("Descargar CSV Actualizado"):
-                    st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
+                if st.download_button("Descargar CSV Actualizado", key="download_button", data=df.to_csv(index=False), file_name="archivo_actualizado.csv"):
+                    st.success("¡Descarga iniciada!")
         else:
             # Mostrar advertencia si la cantidad no está en el rango adecuado
             st.warning("La cantidad de registros a eliminar debe estar entre 0 y la cantidad total en el CSV.")
