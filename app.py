@@ -110,24 +110,28 @@ if uploaded_file:
         # Cuadro de entrada para la cantidad de registros a eliminar
         num_records_to_delete = st.number_input("**Ingrese la cantidad de registros a eliminar:**", min_value=0, max_value=len(df), step=1)
 
-        # Botón para eliminar registros
-        if st.button("Eliminar Registros"):
-            # Seleccionar una muestra aleatoria de filas
-            random_sample = df.sample(n=num_records_to_delete, random_state=42)
+        # Validar que la cantidad de registros a eliminar no supere la longitud del DataFrame
+        if num_records_to_delete > len(df):
+            st.warning("Cantidad que supera el CSV. La cantidad de registros a eliminar no puede ser mayor que la cantidad total en el CSV.")
+        else:
+            # Botón para eliminar registros
+            if st.button("Eliminar Registros"):
+                # Seleccionar una muestra aleatoria de filas
+                random_sample = df.sample(n=num_records_to_delete, random_state=42)
 
-            # Eliminar las filas seleccionadas
-            df = df.drop(random_sample.index)
+                # Eliminar las filas seleccionadas
+                df = df.drop(random_sample.index)
 
-            # Mensaje de éxito
-            st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
+                # Mensaje de éxito
+                st.success(f"Se eliminaron {num_records_to_delete} registros al azar.")
 
-            # Guardar el DataFrame actualizado en un nuevo archivo CSV
-            updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
-            df.to_csv(updated_csv_path, index=False)
+                # Guardar el DataFrame actualizado en un nuevo archivo CSV
+                updated_csv_path = os.path.join(get_download_folder(), "archivo_actualizado.csv")
+                df.to_csv(updated_csv_path, index=False)
 
-            # Botón para descargar el CSV actualizado
-            if st.button("Descargar CSV Actualizado"):
-                st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
+                # Botón para descargar el CSV actualizado
+                if st.button("Descargar CSV Actualizado"):
+                    st.markdown(get_binary_file_downloader_html(updated_csv_path, 'Archivo Actualizado CSV'), unsafe_allow_html=True)
    
     else:
         # Limpiar la pantalla
