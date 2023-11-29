@@ -43,7 +43,7 @@ def download_csv():
     with open('steam.csv', 'rb') as f:
         csv = f.read()
         b64 = base64.b64encode(csv).decode()
-        href = f'<a href="data:file/csv;base64,{b64}" download="steam.csv">Descargar archivo recortado</a>'
+        href = f'<a href="data:file/csv;base64,{b64}" download="steam.csv">Descargar archivo CSV recortado</a>'
     return href
 
 # Definir la función para generar el enlace a Google Drive
@@ -57,7 +57,7 @@ def generate_drive_link(file_id, filename):
 file_id = '1rmjw6-pv5UlKyMvuhWm-JgJVLCF7y7cy'
 
 # Nombre del archivo que se mostrará en el enlace
-filename_drive = 'Descargar archivo completo'
+filename_drive = 'Descargar archivo CSV completo'
 
 # Generar el enlace a Google Drive
 drive_link = generate_drive_link(file_id, filename_drive)
@@ -99,6 +99,7 @@ def get_download_folder():
     return download_folder
 
 if uploaded_file:
+    st.text("Subiendo datos, por favor espere...")
     df_placeholder = st.empty()  # Marcador de posición para el DataFrame
     df = pd.read_csv(uploaded_file)
 
